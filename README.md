@@ -1,189 +1,116 @@
-# Product Management Backend
+# Product Management System - SESD Workshop
 
-Simple Node.js backend with **TypeScript**, MongoDB, OOP structure, and all HTTP methods.
+A CRUD backend application built with Node.js, TypeScript, Express, and MongoDB demonstrating Object-Oriented Programming principles . We can get products stored in the database , crrate new products having atttributes like price stock quantity,etc.
 
-## 🚀 Features
+## Overview
 
-### CRUD Operations with All HTTP Methods
-- **GET** - Retrieve all products or single product
-- **POST** - Create new product
-- **PUT** - Full update of product
-- **PATCH** - Partial update of product
-- **DELETE** - Remove product
+This project implements a Product Management System with complete CRUD operations using clean OOP architecture.
 
-### TypeScript + OOP Structure
-- **TypeScript** - Full type safety with interfaces
-- **Models** - Mongoose schemas with Document interface
-- **Controllers** - Request handling with typed class
-- **Middleware** - Logging, validation, error handling
+## Technologies Used
 
-### Middleware
-- ✅ Request logging
-- ✅ Input validation
-- ✅ Error handling (Mongoose errors, validation, duplicates)
+- Node.js with TypeScript
+- Express.js
+- MongoDB with Mongoose
+- OOP Design Pattern
 
-## 📁 Project Structure
+## Features
+
+- Create, Read, Update, Delete products
+- All HTTP methods: GET, POST, PUT, PATCH, DELETE
+- Input validation
+- Error handling
+- Request logging
+
+
+
+We use TypeScript classes to group related functionality:
+
+**Database Class**
+```typescript
+class Database {
+  static async connect(): Promise<void> {
+    await mongoose.connect(process.env.MONGODB_URI);
+  }
+}
+```
+This class encapsulates all database connection logic in one place.
+
+**Controller Class**
+```typescript
+class ProductController {
+  async getAllProducts(req: Request, res: Response): Promise<void> {
+    // Handle request
+  }
+  
+  async createProduct(req: Request, res: Response): Promise<void> {
+    // Handle request
+  }
+}
+```
+
+
+We define schemas and export models:
+
+```typescript
+const ProductSchema = new Schema<IProduct>({
+  name: { type: String, required: true },
+  price: { type: Number, required: true }
+});
+
+export const ProductModel = model<IProduct>('Product', ProductSchema);
+```
+
+## Project Structure
 
 ```
-SESD_Workshop/
-├── src/
-│   ├── config/
-│   │   └── database.js       # MongoDB connection
-│   ├── models/
-│   │   └── Product.js        # Mongoose model
-│   ├── controllers/
-│   │   └── ProductController.js  # All HTTP methods
-│   ├── middlewares/
-│   │   └── middleware.js     # Logging, validation, errors
-│   ├── routes/
-│   │   └── productRoutes.js  # API routes
-│   └── server.js             # Entry point
-├── package.json
-└── .env
+src/
+├── config/
+│   └── database.ts          # Database connection class
+├── models/
+│   └── Product.ts           # Product schema and interface
+├── controllers/
+│   └── ProductController.ts # Request handlers (class-based)
+├── middlewares/
+│   └── middleware.ts        # Validation and error handling
+├── routes/
+│   └── productRoutes.ts     # Route definitions
+└── server.ts                # Application entry point
 ```
 
-## 🛠️ Setup
+## Setup Instructions
 
-### Prerequisites
-- Node.js (v16+)
-- MongoDB (running locally or MongoDB Atlas)
-
-### Installation
-
+1. Install dependencies:
 ```bash
-# Install dependencies
 npm install
+```
 
-# Start MongoDB (if running locally)
-mongod
+2. Configure environment variables in `.env`:
+```
+PORT=3000
+MONGODB_URI=my mongodb connection string
+```
 
-# Start server
+3. Start the server:
+```bash
 npm run dev
 ```
 
-Server runs on `http://localhost:3000`
-
-## 📡 API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/products` | Get all products |
-| GET | `/api/products/:id` | Get single product |
-| POST | `/api/products` | Create product |
-| PUT | `/api/products/:id` | Full update |
-| PATCH | `/api/products/:id` | Partial update |
-| DELETE | `/api/products/:id` | Delete product |
+| GET | /api/products | Get all products |
+| GET | /api/products/:id | Get single product |
+| POST | /api/products | Create product |
+| PUT | /api/products/:id | Full update |
+| PATCH | /api/products/:id | Partial update |
+| DELETE | /api/products/:id | Delete product |
 
-## 📝 API Examples
+## OOP Principles Demonstrated
 
-### Create Product (POST)
-```bash
-curl -X POST http://localhost:3000/api/products \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Laptop",
-    "description": "Gaming laptop",
-    "price": 1200,
-    "category": "Electronics",
-    "stock": 10,
-    "sku": "LAP001"
-  }'
-```
+1. **Encapsulation** - Logic grouped in classes and modules
+2. **Abstraction** - Interfaces hide implementation details
+3. **Separation of Concerns** - Each file has a single responsibility
+4. **Type Safety** - TypeScript interfaces ensure data integrity
 
-### Get All Products (GET)
-```bash
-curl http://localhost:3000/api/products
-```
 
-### Get Single Product (GET)
-```bash
-curl http://localhost:3000/api/products/{id}
-```
-
-### Full Update (PUT)
-```bash
-curl -X PUT http://localhost:3000/api/products/{id} \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Gaming Laptop",
-    "description": "High-end gaming laptop",
-    "price": 1500,
-    "category": "Electronics",
-    "stock": 8,
-    "sku": "LAP001"
-  }'
-```
-
-### Partial Update (PATCH)
-```bash
-curl -X PATCH http://localhost:3000/api/products/{id} \
-  -H "Content-Type: application/json" \
-  -d '{"stock": 5}'
-```
-
-### Delete Product (DELETE)
-```bash
-curl -X DELETE http://localhost:3000/api/products/{id}
-```
-
-## 🔧 Environment Variables
-
-Create a `.env` file:
-
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/products_db
-NODE_ENV=development
-```
-
-## 📚 OOP Implementation
-
-### Model (Product.js)
-```javascript
-class Product {
-  static model = mongoose.model('Product', productSchema);
-  static async create(data) { ... }
-  static async findAll() { ... }
-  // ... other methods
-}
-```
-
-### Controller (ProductController.js)
-```javascript
-class ProductController {
-  async getAllProducts(req, res, next) { ... }
-  async createProduct(req, res, next) { ... }
-  // ... all HTTP methods
-}
-```
-
-### Middleware
-- **Logger** - Logs all requests
-- **Validator** - Validates product data
-- **Error Handler** - Handles all errors gracefully
-
-## ✅ Validation
-
-Products must have:
-- `name` - Required, non-empty string
-- `price` - Required, positive number
-- `category` - Required, non-empty string
-- `stock` - Required, non-negative number
-- `sku` - Required, unique string
-- `description` - Optional string
-
-## 🎓 Learning Points
-
-- ✅ Node.js with Express
-- ✅ MongoDB with Mongoose
-- ✅ OOP patterns (classes, static methods)
-- ✅ All HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- ✅ Middleware (logging, validation, error handling)
-- ✅ RESTful API design
-- ✅ Environment variables
-- ✅ Error handling
-
----
-
-**SESD Workshop Assignment** 🚀
-# SESD_WORKSHOP
