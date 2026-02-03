@@ -65,16 +65,16 @@ export const ProductModel = model<IProduct>('Product', ProductSchema);
 ```
 src/
 ├── config/
-│   └── database.ts          # Database connection class
+│   └── database.ts        
 ├── models/
-│   └── Product.ts           # Product schema and interface
+│   └── Product.ts          
 ├── controllers/
-│   └── ProductController.ts # Request handlers (class-based)
+│   └── ProductController.ts
 ├── middlewares/
-│   └── middleware.ts        # Validation and error handling
+│   └── middleware.ts   
 ├── routes/
-│   └── productRoutes.ts     # Route definitions
-└── server.ts                # Application entry point
+│   └── productRoutes.ts     
+└── server.ts        
 ```
 
 ## Setup Instructions
